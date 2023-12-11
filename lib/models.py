@@ -1,8 +1,13 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
+
+user_stock_association = Table('user_stock', Base.metadata,
+    Column('user_id', Integer, ForeignKey('users.id')),
+    Column('stock_id', Integer, ForeignKey('stocks.id'))
+)
 
 class User(Base):
     __tablename__ = 'users'
@@ -13,7 +18,7 @@ class User(Base):
     date_of_account_creation = Column(DateTime)
     profession = Column(String)
     market_data = relationship('MarketData', back_populates='user')
-    stocks = relationship('Stock', secondary='market_data')
+    stocks = relationship('Stock', secondary=user_stock_association)
 
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
