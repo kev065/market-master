@@ -1,3 +1,6 @@
+import sys
+sys.path.append("lib")
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, create_engine, MetaData, pool
