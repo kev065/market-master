@@ -1,9 +1,12 @@
 import yfinance as yf
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import User, Stock, MarketData
+from models import Base, User, Stock, MarketData
 
-engine = create_engine('sqlite:///stocks.db') 
+engine = create_engine('sqlite:///stocks.db', echo=True) 
+
+Base.metadata.create_all(engine)
+
 Session = sessionmaker(bind=engine)
 session = Session()
 
