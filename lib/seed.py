@@ -1,7 +1,10 @@
 import yfinance as yf
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 from models import Base, User, Stock, MarketData
+
+date_of_account_creation = datetime(2023, 12, 11)
 
 engine = create_engine('sqlite:///stocks.db', echo=True) 
 
@@ -11,8 +14,8 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Create some users
-user1 = User(first_name='John', last_name='Doe', email='john@example.com', date_of_account_creation='2023-12-11', profession='Engineer')
-user2 = User(first_name='Jane', last_name='Doe', email='jane@example.com', date_of_account_creation='2023-12-11', profession='Doctor')
+user1 = User(first_name='John', last_name='Doe', email='john@example.com', date_of_account_creation=date_of_account_creation, profession='Engineer')
+user2 = User(first_name='Jane', last_name='Doe', email='jane@example.com', date_of_account_creation=date_of_account_creation, profession='Doctor')
 
 # Add and commit the users
 session.add(user1)
@@ -27,13 +30,19 @@ for ticker in tickers:
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
 
+    # Check if the keys exist in the dictionary before accessing them
+    name = stock_data.get('shortName', 'N/A')
+    price = stock_data.get('regularMarketPrice', 0)
+    opening_price = stock_data.get('regularMarketOpen', 0)
+    closing_price = stock_data.get('regularMarketPreviousClose', 0)
+
     # Create a new stock instance
     stock = Stock(
-        name=stock_data['shortName'],
-        price=stock_data['regularMarketPrice'],
+        name=name,
+        price=price,
         ticker=ticker,
-        opening_price=stock_data['regularMarketOpen'],
-        closing_price=stock_data['regularMarketPreviousClose']
+        opening_price=opening_price,
+        closing_price=closing_price
     )
 
     # Add and commit the stock
