@@ -37,16 +37,21 @@ for ticker in tickers:
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
 
+    # Fetch historical market data for the past 90 days
+    history = stock_info.history(period='90d')
+
+    # Calculate the 90-day moving average from the closing prices
+    moving_average_90d = history['Close'].mean()
+
     # Check if the keys exist in the dictionary before accessing them
     name = stock_data.get('shortName', 'N/A')
-    price = stock_data.get('regularMarketPrice', 0)
     opening_price = stock_data.get('regularMarketOpen', 0)
     closing_price = stock_data.get('regularMarketPreviousClose', 0)
 
     # Create a new stock instance
     stock = Stock(
         name=name,
-        price=price,
+        moving_average_90d=moving_average_90d,
         ticker=ticker,
         opening_price=opening_price,
         closing_price=closing_price
