@@ -6,7 +6,8 @@ Base = declarative_base()
 
 user_stock_association = Table('user_stock', Base.metadata,
     Column('user_id', Integer, ForeignKey('users.id')),
-    Column('stock_id', Integer, ForeignKey('stocks.id'))
+    Column('stock_id', Integer, ForeignKey('stocks.id')),
+    Column('date_added', DateTime)
 )
 
 class User(Base):
