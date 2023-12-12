@@ -1,16 +1,17 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Table, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+import enum
 
 Base = declarative_base()
 
 # Defines the Rating Enum
-class Rating(Enum):
-    STRONG_SELL = 1
-    UNDERPERFORM = 2
-    HOLD = 3
-    OUTPERFORM = 4
-    STRONG_BUY = 5
+class Rating(enum.Enum):
+    STRONG_SELL = '1'
+    UNDERPERFORM = '2'
+    HOLD = '3'
+    OUTPERFORM = '4'
+    STRONG_BUY = '5'
 
 user_stock_association = Table('user_stock', Base.metadata,
     Column('user_id', Integer, ForeignKey('users.id')),
@@ -65,7 +66,7 @@ class MarketData(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     stock_id = Column(Integer, ForeignKey('stocks.id'))
-    rating = Column(Rating)
+    rating = Column(Enum(Rating))
     user = relationship('User', back_populates='market_data')
     stock = relationship('Stock', back_populates='market_data')
 
