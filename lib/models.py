@@ -47,7 +47,6 @@ class Stock(Base):
     __tablename__ = 'stocks'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    price = Column(Integer)
     ticker = Column(String)
     opening_price = Column(Float)
     closing_price = Column(Float)
