@@ -18,7 +18,7 @@ class User(Base):
     date_of_account_creation = Column(DateTime)
     profession = Column(String)
     market_data = relationship('MarketData', back_populates='user')
-    stocks = relationship('Stock', secondary=user_stock_association)
+    stocks = relationship('Stock', secondary=user_stock_association, back_populates='users')
 
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -42,6 +42,7 @@ class Stock(Base):
     opening_price = Column(Float)
     closing_price = Column(Float)
     market_data = relationship('MarketData', back_populates='stock')
+    users = relationship('User', secondary=user_stock_association, back_populates='stocks')
 
     @classmethod
     def highest_price(cls):
