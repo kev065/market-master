@@ -2,7 +2,7 @@ import yfinance as yf
 from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-from models import Base, User, Stock, MarketData, user_stock_association
+from models import Base, User, Stock, MarketData, user_stock_association, Rating
 
 date_of_account_creation = datetime(2023, 12, 11)
 
@@ -67,8 +67,8 @@ for ticker in tickers:
     session.execute(insert_stmt)
 
     # Create some market data
-    market_data1 = MarketData(user=user1, stock=stock, rating=5)
-    market_data2 = MarketData(user=user2, stock=stock, rating=4)
+    market_data1 = MarketData(user=user1, stock=stock, rating=Rating.STRONG_BUY)
+    market_data2 = MarketData(user=user2, stock=stock, rating=Rating.OUTPERFORM)
 
     # Add and commit the market data
     session.add(market_data1)
