@@ -13,6 +13,12 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# Clear the database before each new seed
+session.query(MarketData).delete()
+session.query(User).delete()
+session.query(Stock).delete()
+session.commit()
+
 # Create some users
 user1 = User(first_name='John', last_name='Doe', email='john@example.com', date_of_account_creation=date_of_account_creation, profession='Engineer')
 user2 = User(first_name='Jane', last_name='Doe', email='jane@example.com', date_of_account_creation=date_of_account_creation, profession='Doctor')
@@ -26,7 +32,7 @@ session.commit()
 tickers = ['AAPL', 'MSFT', 'GOOGL']
 
 for ticker in tickers:
-    # Fetches stock data using yfinance
+    # Fetching stock data using yfinance 
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
 
