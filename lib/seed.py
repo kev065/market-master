@@ -1,8 +1,8 @@
 import yfinance as yf
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
-from models import Base, User, Stock, MarketData
+from models import Base, User, Stock, MarketData, user_stock_association
 
 date_of_account_creation = datetime(2023, 12, 11)
 
@@ -26,7 +26,7 @@ session.commit()
 tickers = ['AAPL', 'MSFT', 'GOOGL']
 
 for ticker in tickers:
-    # Fetch stock data using yfinance
+    # Fetches stock data using yfinance
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
 
@@ -48,6 +48,16 @@ for ticker in tickers:
     # Add and commit the stock
     session.add(stock)
     session.commit()
+
+    # Add stock to user's watchlist
+    user1.stocks.append(stock)
+    user2.stocks.append(stock)
+
+    # Set the date_added column in the user_stock association table
+    insert_stmt = insert(user_stock_association).values(user_id=user1.id, stock_id=stock.id, date_added=datetime.now())
+    session.execute(insert_stmt)
+    insert_stmt = insert(user_stock_association).values(user_id=user2.id, stock_id=stock.id, date_added=datetime.now())
+    session.execute(insert_stmt)
 
     # Create some market data
     market_data1 = MarketData(user=user1, stock=stock, rating=5)
