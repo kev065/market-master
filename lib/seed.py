@@ -14,6 +14,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Clear the database before each new seed
+session.execute(user_stock_association.delete())
 session.query(MarketData).delete()
 session.query(User).delete()
 session.query(Stock).delete()
