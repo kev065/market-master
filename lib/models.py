@@ -51,6 +51,7 @@ class Stock(Base):
     ticker = Column(String)
     opening_price = Column(Float)
     closing_price = Column(Float)
+    moving_average_90d = Column(Float, name='90-D MA')
     market_data = relationship('MarketData', back_populates='stock')
     users = relationship('User', secondary=user_stock_association, back_populates='stocks')
 
