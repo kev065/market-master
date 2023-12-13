@@ -30,7 +30,7 @@ session.add(user2)
 session.commit()
 
 # List of stock tickers to fetch data for
-tickers = ['AAPL', 'MSFT', 'GOOGL']
+tickers = ['AAPL', 'MSFT', 'GOOGL', 'MMM', 'AXP', 'AMGN', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'GS', 'HD', 'HON', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PG', 'CRM', 'TRV', 'UNH', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
 
 for ticker in tickers:
     # Fetching stock data using yfinance 
