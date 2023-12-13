@@ -72,6 +72,9 @@ def check_stock():
     click.echo(f'52 Week Low: {fifty_two_week_low}')
     click.echo(f'5 Year Change: {five_year_change}')
 
+    if click.confirm('Would you like to leave a comment on this stock\'s performance?'):  # new condition
+        comment = click.prompt('Please enter your comment')
+
 cli.add_command(create_user)
 cli.add_command(check_stock)
 
