@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Tab
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 import enum
+from datetime import datetime, timedelta
 
 Base = declarative_base()
 
@@ -25,7 +26,7 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     email = Column(String)
-    date_of_account_creation = Column(DateTime)
+    date_of_account_creation = Column(DateTime, default=lambda: datetime.utcnow() + timedelta(hours=3))
     profession = Column(String)
     username = Column(String)
     password = Column(String)
