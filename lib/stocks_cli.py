@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from models import Base, User, Stock
 import yfinance as yf
-
+import pprint
 
 engine = create_engine('sqlite:///stocks.db', echo=True)
 Session = sessionmaker(bind=engine)
@@ -32,6 +32,8 @@ def check_stock():
 
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
+
+    pprint.pprint(stock_data)
 
     avg_daily_volume = stock_data.get('averageDailyVolume10Day')
     market_cap = stock_data.get('marketCap')
