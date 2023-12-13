@@ -72,8 +72,8 @@ for ticker in tickers:
     session.execute(insert_stmt)
 
     # Create some market data
-    market_data1 = MarketData(user=user1, stock=stock, rating=Rating.STRONG_BUY)
-    market_data2 = MarketData(user=user2, stock=stock, rating=Rating.OUTPERFORM)
+    market_data1 = MarketData(user=user1, stock=stock, rating=Rating.STRONG_BUY, comment='I love this stock!')
+    market_data2 = MarketData(user=user2, stock=stock, rating=Rating.OUTPERFORM, comment='I live off this stock's dividends. Yeehaw!')
 
     # Add and commit the market data
     session.add(market_data1)
