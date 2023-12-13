@@ -3,6 +3,7 @@ from sqlalchemy import create_engine, insert
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from models import Base, User, Stock, MarketData, user_stock_association, Rating
+import random
 
 date_of_account_creation = datetime(2023, 12, 11)
 
@@ -21,8 +22,8 @@ session.query(Stock).delete()
 session.commit()
 
 # Create some users
-user1 = User(first_name='John', last_name='Doe', email='john@example.com', date_of_account_creation=date_of_account_creation, profession='Engineer')
-user2 = User(first_name='Jane', last_name='Doe', email='jane@example.com', date_of_account_creation=date_of_account_creation, profession='Doctor')
+user1 = User(first_name='John', last_name='Deere', email='john@gmail.com', date_of_account_creation=date_of_account_creation, profession='Engineer')
+user2 = User(first_name='Jane', last_name='Dawg', email='inher@live.com', date_of_account_creation=date_of_account_creation, profession='Doctor')
 
 # Add and commit the users
 session.add(user1)
@@ -31,6 +32,9 @@ session.commit()
 
 # List of stock tickers to fetch data for
 tickers = ['AAPL', 'MSFT', 'GOOGL', 'MMM', 'AXP', 'AMGN', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'GS', 'HD', 'HON', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PG', 'CRM', 'TRV', 'UNH', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
+
+# List of comments
+comments = ['Great performance!', 'Good potential.', 'Steady growth.', 'Impressive returns.', 'Strong buy.', 'Outperforming the market.', 'Could do better.', 'Not meeting expectations.', 'Showing promise.', 'A safe bet.', 'I live off the dividends payed by this stock.', 'God bless the executives and employees of this company.']
 
 for ticker in tickers:
     # Fetching stock data using yfinance 
@@ -71,9 +75,9 @@ for ticker in tickers:
     insert_stmt = insert(user_stock_association).values(user_id=user2.id, stock_id=stock.id, date_added=datetime.now())
     session.execute(insert_stmt)
 
-    # Create some market data
-    market_data1 = MarketData(user=user1, stock=stock, rating=Rating.STRONG_BUY, comment='I love this stock!')
-    market_data2 = MarketData(user=user2, stock=stock, rating=Rating.OUTPERFORM, comment='I live off this stock\'s dividends. Yeehaw!')
+    # Creates some market data with comments
+    market_data1 = MarketData(user=user1, stock=stock, rating=Rating.STRONG_BUY, comment=random.choice(comments))
+    market_data2 = MarketData(user=user2, stock=stock, rating=Rating.OUTPERFORM, comment=random.choice(comments))
 
     # Add and commit the market data
     session.add(market_data1)
