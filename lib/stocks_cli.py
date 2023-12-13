@@ -19,12 +19,15 @@ def create_user():
     last_name = click.prompt('Please enter your last name')
     email = click.prompt('Please enter your email')
     profession = click.prompt('Please enter your profession')
+    username = click.prompt('Please enter your preferred username')
+    password = click.prompt('Please enter your preferred password') 
 
-    user = User(first_name=first_name, last_name=last_name, email=email, profession=profession)
+
+    user = User(first_name=first_name, last_name=last_name, email=email, profession=profession, username=username, password=password)
     session.add(user)
     session.commit()
 
-    click.echo(f'User {first_name} {last_name} created successfully!')
+    click.echo(f'User {username} created successfully!')
 
 @click.command()
 def check_stock():
