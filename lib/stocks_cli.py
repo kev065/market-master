@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from models import Base, User, Stock
 import yfinance as yf
 
+
 engine = create_engine('sqlite:///stocks.db', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -35,10 +36,26 @@ def check_stock():
     avg_daily_volume = stock_data.get('averageDailyVolume10Day')
     market_cap = stock_data.get('marketCap')
     price = stock_data.get('regularMarketPrice')
+    open_price = stock_data.get('regularMarketOpen')
+    day_high = stock_data.get('dayHigh')
+    day_low = stock_data.get('dayLow')
+    ninety_day_avg = stock_data.get('average90Vol')
+    pe_ratio = stock_data.get('trailingPE')
+    fifty_two_week_high = stock_data.get('fiftyTwoWeekHigh')
+    fifty_two_week_low = stock_data.get('fiftyTwoWeekLow')
+    five_year_change = stock_data.get('fiveYearAvgDividendYield')
 
     click.echo(f'Average Daily Volume: {avg_daily_volume}')
     click.echo(f'Market Cap: {market_cap}')
     click.echo(f'Price: {price}')
+    click.echo(f'Opening Price: {open_price}')
+    click.echo(f'Highest Price of the Day: {day_high}')
+    click.echo(f'Lowest Price of the Day: {day_low}')
+    click.echo(f'90 Day Average: {ninety_day_avg}')
+    click.echo(f'Price to Earnings Ratio: {pe_ratio}')
+    click.echo(f'52 Week High: {fifty_two_week_high}')
+    click.echo(f'52 Week Low: {fifty_two_week_low}')
+    click.echo(f'5 Year Change: {five_year_change}')
 
 cli.add_command(create_user)
 cli.add_command(check_stock)
