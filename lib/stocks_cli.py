@@ -27,6 +27,16 @@ def create_user():
     session.add(user)
     session.commit()
 
+    tickers = click.prompt('Please enter the tickers of the stocks you want to add to your watchlist, separated by commas')
+    tickers = [ticker.strip() for ticker in tickers.split(',')]
+
+    for ticker in tickers:
+        stock = session.query(Stock).filter_by(ticker=ticker).first()
+        if stock is not None:
+            user.stocks.append(stock)
+
+    session.commit()
+
     click.echo(f'User {username} created successfully!')
 
 @click.command()
