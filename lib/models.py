@@ -27,6 +27,9 @@ class User(Base):
     email = Column(String)
     date_of_account_creation = Column(DateTime)
     profession = Column(String)
+    username = Column(String)
+    password = Column(String)
+
     market_data = relationship('MarketData', back_populates='user')
     stocks = relationship('Stock', secondary=user_stock_association, back_populates='users')
 
