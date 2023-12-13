@@ -72,8 +72,15 @@ def check_stock():
     click.echo(f'52 Week Low: {fifty_two_week_low}')
     click.echo(f'5 Year Change: {five_year_change}')
 
-    if click.confirm('Would you like to leave a comment on this stock\'s performance?'):  # new condition
-        comment = click.prompt('Please enter your comment')
+    if click.confirm('Would you like to leave a comment on this stock\'s performance?'):
+        comment_text = click.prompt('Please enter your comment')
+
+        # Find the MarketData entry for this user and stock
+        market_data = session.query(MarketData).filter_by(user_id=user.id, stock_id=stock.id).first()
+
+        # Stores the comment in the DB
+        market_data.comment = comment_text
+        session.commit()
 
 cli.add_command(create_user)
 cli.add_command(check_stock)
