@@ -71,8 +71,9 @@ class MarketData(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     stock_id = Column(Integer, ForeignKey('stocks.id'))
     rating = Column(Enum(Rating))
+    comment = Column(String)
     user = relationship('User', back_populates='market_data')
     stock = relationship('Stock', back_populates='market_data')
 
     def full_market_data(self):
-        return f"Market Data for {self.stock.name} by {self.user.full_name()}: {self.rating.name}."
+        return f"Market Data for {self.stock.name} by {self.user.full_name()}: {self.rating.name}. Comment: {self.comment}"
