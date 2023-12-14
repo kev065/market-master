@@ -49,7 +49,7 @@ def create_user():
 def check_stock(user_id):
     user = session.query(User).filter_by(id=user_id).first()
 
-    ticker = click.prompt('Please enter the ticker of the stock')
+    ticker = click.prompt('Please enter the ticker of the stock that you want to analyze')
 
     stock_info = yf.Ticker(ticker)
     stock_data = stock_info.info
