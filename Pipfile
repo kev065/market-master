@@ -11,6 +11,7 @@ ipdb = "0.13.9"
 SQLAlchemy = "1.4.41"
 yfinance = "*"
 click = "*"
+numpy = "*"
 
 [dev-packages]
 
