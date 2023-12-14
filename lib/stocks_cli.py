@@ -1,7 +1,7 @@
 import click
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from models import Base, User, Stock
+from models import Base, User, Stock, MarketData
 import yfinance as yf
 import pprint
 
