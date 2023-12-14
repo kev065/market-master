@@ -42,7 +42,7 @@ def create_user():
     click.echo(f'User {username} created successfully!')
 
 @click.command()
-@click.argument('user_id', type=int)  # Add a click argument for user_id
+@click.argument('user_id', type=int)  # Adds a click argument for user_id
 def check_stock(user_id):
     user = session.query(User).filter_by(id=user_id).first()
 
@@ -77,13 +77,14 @@ def check_stock(user_id):
     click.echo(f'52 Week Low: {fifty_two_week_low}')
     click.echo(f'5 Year Change: {five_year_change}')
 
-    if click.confirm('Would you like to leave a comment on this stock\'s performance?'):
+    if click.confirm('Would you like to leave a rating and comment on this stock\'s performance?'):
+        rating = click.prompt('Please enter your rating', type=click.Choice(['STRONG SELL', 'UNDERPERFORM', 'HOLD', 'OUTPERFORM', 'STRONG BUY'], case_sensitive=False))
         comment_text = click.prompt('Please enter your comment')
 
         # Assign the retrieved stock
         stock = session.query(Stock).filter_by(ticker=ticker).first()
 
-        # Update the comment association only if the stock exists
+        # Update the comment and rating association only if the stock exists
         if stock:
             market_data = session.query(MarketData).filter_by(user_id=user.id, stock_id=stock.id).first()
             
@@ -93,12 +94,40 @@ def check_stock(user_id):
                 session.add(market_data)
 
             market_data.comment = comment_text
+            market_data.rating = rating  # Set the rating
             session.commit()
 
-        click.echo(f'Your comment has been saved!')
+        click.echo(f'Your rating and comment have been saved!')
+
+@click.command()
+def view_best_worst_stocks():
+    # Defines the most popular indices in the US
+    indices = ['^DJI', '^GSPC', '^IXIC']
+
+    for index in indices:
+        # Fetch the data for the index
+        index_data = yf.Ticker(index)
+
+        # Get the constituents of the index
+        constituents = index_data.sustainability['symbol'].values.tolist()
+
+        # Fetches the data for each constituent
+        data = yf.download(constituents, period='1d', group_by='ticker')
+
+        # Calculate the daily returns for each constituent
+        returns = data['Adj Close'].pct_change()
+
+        # Find the best and worst performing stocks
+        best_stock = returns.idxmax()
+        worst_stock = returns.idxmin()
+
+        click.echo(f'Index: {index}')
+        click.echo(f'Best performing stock: {best_stock}')
+        click.echo(f'Worst performing stock: {worst_stock}\n')
 
 cli.add_command(create_user)
 cli.add_command(check_stock)
+cli.add_command(view_best_worst_stocks)
 
 if __name__ == '__main__':
     cli()
