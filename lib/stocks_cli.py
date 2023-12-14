@@ -1,9 +1,11 @@
 import click
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
-from models import Base, User, Stock, MarketData
+from sqlalchemy import create_engine, insert
+from models import Base, User, Stock, MarketData, user_stock_association
 import yfinance as yf
 import pprint
+from datetime import datetime
+
 
 engine = create_engine('sqlite:///stocks.db', echo=True)
 Session = sessionmaker(bind=engine)
@@ -32,15 +34,10 @@ def create_user():
     for ticker in tickers:
         stock = session.query(Stock).filter_by(ticker=ticker).first()
         if stock is not None:
-            user.stocks.append(stock)
+            insert_stmt = insert(user_stock_association).values(user_id=user.id, stock_id=stock.id, date_added=datetime.now())
+            session.execute(insert_stmt)
 
     session.commit()
-
-    # Get the most recently created user
-    recently_created_user = session.query(User).order_by(User.id.desc()).first()
-
-    # Pass the user.id to check_stock
-    check_stock([str(recently_created_user.id)])  # Pass user.id as a list of strings
 
     click.echo(f'User {username} created successfully!')
 
