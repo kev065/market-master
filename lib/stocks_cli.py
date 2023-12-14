@@ -101,21 +101,27 @@ def check_stock(user_id):
 
 @click.command()
 def view_best_worst_stocks():
-    # Define the tickers of the 30 stocks in the DJIA
+    # Tickers of the 30 stocks in the DJIA
     tickers = ['MMM', 'AXP', 'AAPL', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'XOM', 'GS', 'HD', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PFE', 'PG', 'TRV', 'UNH', 'RTX', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
 
-    # Fetch the data for each ticker
-    data = yf.download(tickers, period='1d')
+    # Fetch the data for each ticker for the last 5 business days
+    data = yf.download(tickers, period='5d')
 
     # Calculate the daily returns for each ticker
     returns = data['Adj Close'].pct_change()
+
+    # Drop NA values
+    returns = returns.dropna()
 
     # Find the best and worst performing stocks
     best_stock = returns.idxmax()
     worst_stock = returns.idxmin()
 
-    click.echo(f'Best performing stock: {best_stock}')
-    click.echo(f'Worst performing stock: {worst_stock}\n')
+    # Print the best and worst performing stocks along with their performance
+    for ticker in tickers:
+        click.echo(f'Best performing day for {ticker}: {best_stock[ticker]} ({returns.loc[best_stock[ticker], ticker]*100:.2f}%)')
+        click.echo(f'Worst performing day for {ticker}: {worst_stock[ticker]} ({returns.loc[worst_stock[ticker], ticker]*100:.2f}%)\n')
+
 
 cli.add_command(create_user)
 cli.add_command(check_stock)
