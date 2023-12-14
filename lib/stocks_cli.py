@@ -22,7 +22,6 @@ def create_user():
     username = click.prompt('Please enter your preferred username')
     password = click.prompt('Please enter your preferred password') 
 
-
     user = User(first_name=first_name, last_name=last_name, email=email, profession=profession, username=username, password=password)
     session.add(user)
     session.commit()
@@ -37,10 +36,19 @@ def create_user():
 
     session.commit()
 
+    # Get the most recently created user
+    recently_created_user = session.query(User).order_by(User.id.desc()).first()
+
+    # Pass the user.id to check_stock
+    check_stock([str(recently_created_user.id)])  # Pass user.id as a list of strings
+
     click.echo(f'User {username} created successfully!')
 
 @click.command()
-def check_stock():
+@click.argument('user_id', type=int)  # Add a click argument for user_id
+def check_stock(user_id):
+    user = session.query(User).filter_by(id=user_id).first()
+
     ticker = click.prompt('Please enter the ticker of the stock')
 
     stock_info = yf.Ticker(ticker)
@@ -75,12 +83,22 @@ def check_stock():
     if click.confirm('Would you like to leave a comment on this stock\'s performance?'):
         comment_text = click.prompt('Please enter your comment')
 
-        # Find the MarketData entry for this user and stock
-        market_data = session.query(MarketData).filter_by(user_id=user.id, stock_id=stock.id).first()
+        # Assign the retrieved stock
+        stock = session.query(Stock).filter_by(ticker=ticker).first()
 
-        # Stores the comment in the DB
-        market_data.comment = comment_text
-        session.commit()
+        # Update the comment association only if the stock exists
+        if stock:
+            market_data = session.query(MarketData).filter_by(user_id=user.id, stock_id=stock.id).first()
+            
+            # If market_data doesn't exist, create a new MarketData object
+            if market_data is None:
+                market_data = MarketData(user_id=user.id, stock_id=stock.id)
+                session.add(market_data)
+
+            market_data.comment = comment_text
+            session.commit()
+
+        click.echo(f'Your comment has been saved!')
 
 cli.add_command(create_user)
 cli.add_command(check_stock)
