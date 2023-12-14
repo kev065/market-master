@@ -34,7 +34,7 @@ session.commit()
 tickers = ['AAPL', 'MSFT', 'GOOGL', 'MMM', 'AXP', 'AMGN', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'GS', 'HD', 'HON', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PG', 'CRM', 'TRV', 'UNH', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
 
 # List of comments
-comments = ['Great performance!', 'Good potential.', 'Steady growth.', 'Impressive returns.', 'Strong buy.', 'Outperforming the market.', 'Could do better.', 'Not meeting expectations.', 'Showing promise.', 'A safe bet.', 'I live off the dividends payed by this stock.', 'God bless the executives and employees of this company.']
+comments = ['Great performance!', 'Good potential.', 'Steady growth.', 'Impressive returns.', 'Strong buy.', 'Outperforming the market.', 'Could do better.', 'Not meeting expectations.', 'Showing promise.', 'A safe bet.', 'I live off the dividends paid by this stock.', 'God bless the executives and employees of this company.']
 
 for ticker in tickers:
     # Fetching stock data using yfinance 
