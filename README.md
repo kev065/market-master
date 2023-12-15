@@ -3,11 +3,11 @@
 This application provides users with tools to analyze the stock market. It's designed to help users make sense of complex financial data and provide insights into which stocks to buy or sell.
 
 ## Features
-1. **User Creation and Watchlist**: After creating a new user profile, users are prompted to add stocks to their watchlist. Users can enter the tickers of the stocks they are interested in, and these tickers are stored in the `user_stock` table in the database associated with their user ID and the stock ID.
+1. **User Creation and Watchlist**: After creating a new user profile, users are prompted to add stocks to their watchlist. Users can enter the tickers of the stocks they would like to be added to their watchlist, and these tickers are stored in the `user_stock` table in the database associated with their user ID and the stock ID.
 
 2. **Stock Checking, Comments and Ratings**: Users can check the current status of a particular stock. They will be prompted to enter the ticker of the stock they want to analyze. The application will fetch the data from the Yahoo Finance API and display various metrics about the stock, such as average daily volume, the market cap, price, opening price, highest price of the day, lowest price of the day, 90-day moving average, price to earnings ratio, 52-week high, 52-week low, and 5-year change.
 
-After viewing a stock, users are prompted to enter a rating and a comment. The rating can be one of five options: ‘STRONG SELL’, ‘UNDERPERFORM’, ‘HOLD’, ‘OUTPERFORM’, or ‘STRONG BUY’. The rating and comment are stored in the `MarketData` table in the database, associated with the user’s ID and the stock’s ID.
+    After viewing a stock, users are prompted to enter a rating and a comment. The rating can be one of five options: `STRONG SELL`, `UNDERPERFORM`, `HOLD`, `OUTPERFORM`, or `STRONG BUY`. The rating and comment are stored in the `MarketData` table in the database, associated with the user’s ID and the stock’s ID.
 
 3. **Best and Worst Stocks View**: Users can view the best and worst performing days for each individual stock in the **Dow Jones Industrial Average** . The application fetches data for each ticker for the last 5 business days, calculates the daily returns for each ticker, and identifies the best and worst performing days for each stock.
 
