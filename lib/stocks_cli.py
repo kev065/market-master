@@ -150,5 +150,29 @@ cli.add_command(check_stock)
 cli.add_command(view_best_worst_stocks)
 cli.add_command(view_stock_metrics)
 
+def main():
+    while True:
+        click.echo('Please select an option:')
+        click.echo('1. Create user')
+        click.echo('2. Check stock')
+        click.echo('3. View the best and worst stocks')
+        click.echo('4. View stock metrics')
+        click.echo('5. Exit')
+
+        option = click.prompt('Please enter a number', type=int)
+
+        if option == 1:
+            create_user()
+        elif option == 2:
+            check_stock()
+        elif option == 3:
+            view_best_worst_stocks()
+        elif option == 4:
+            view_stock_metrics()
+        elif option == 5:
+            break
+        else:
+            click.echo('Invalid option. Please try again.')
+
 if __name__ == '__main__':
-    cli()
+    main()
