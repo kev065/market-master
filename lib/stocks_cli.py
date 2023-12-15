@@ -7,17 +7,11 @@ import pprint
 from datetime import datetime
 import numpy as np
 
-
 engine = create_engine('sqlite:///stocks.db', echo=True)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-@click.group()
-def cli():
-    pass
-
-@click.command()
-def create_user():
+def create_user_func():
     first_name = click.prompt('Please enter your first name')
     last_name = click.prompt('Please enter your last name')
     email = click.prompt('Please enter your email')
@@ -42,9 +36,8 @@ def create_user():
 
     click.echo(f'User {username} created successfully!')
 
-@click.command()
-@click.argument('user_id', type=int)  # Adds a click argument for user_id
-def check_stock(user_id):
+def check_stock_func():
+    user_id = click.prompt('Please enter your user ID', type=int)
     user = session.query(User).filter_by(id=user_id).first()
 
     ticker = click.prompt('Please enter the ticker of the stock that you want to analyze')
@@ -95,13 +88,12 @@ def check_stock(user_id):
                 session.add(market_data)
 
             market_data.comment = comment_text
-            market_data.rating = rating  # Set the rating
+            market_data.rating = rating  # Sets the rating
             session.commit()
 
         click.echo(f'Your rating and comment have been saved!')
 
-@click.command()
-def view_best_worst_stocks():
+def view_best_worst_stocks_func():
     # Tickers of the 30 stocks in the DJIA
     tickers = ['MMM', 'AXP', 'AAPL', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'XOM', 'GS', 'HD', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PFE', 'PG', 'TRV', 'UNH', 'RTX', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
 
@@ -124,8 +116,7 @@ def view_best_worst_stocks():
         click.echo(f'Worst performing day for {ticker}: {worst_stock[ticker]} ({returns.loc[worst_stock[ticker], ticker]*100:.2f}%)\n')
 
 
-@click.command()
-def view_stock_metrics():
+def view_stock_metrics_func():
     # Define the tickers of the 30 stocks in the DJIA
     tickers = ['MMM', 'AXP', 'AAPL', 'BA', 'CAT', 'CVX', 'CSCO', 'KO', 'DOW', 'XOM', 'GS', 'HD', 'IBM', 'INTC', 'JNJ', 'JPM', 'MCD', 'MRK', 'MSFT', 'NKE', 'PFE', 'PG', 'TRV', 'UNH', 'RTX', 'VZ', 'V', 'WBA', 'WMT', 'DIS']
 
@@ -145,6 +136,26 @@ def view_stock_metrics():
         click.echo(f'Annual volatility for {ticker}: {volatility[ticker]*100:.2f}%\n')
 
 
+@click.group()
+def cli():
+    pass
+
+@click.command()
+def create_user():
+    create_user_func()
+
+@click.command()
+def check_stock():
+    check_stock_func()
+
+@click.command()
+def view_best_worst_stocks():
+    view_best_worst_stocks_func()
+
+@click.command()
+def view_stock_metrics():
+    view_stock_metrics_func()
+
 cli.add_command(create_user)
 cli.add_command(check_stock)
 cli.add_command(view_best_worst_stocks)
@@ -162,13 +173,13 @@ def main():
         option = click.prompt('Please enter a number', type=int)
 
         if option == 1:
-            create_user()
+            create_user_func()
         elif option == 2:
-            check_stock()
+            check_stock_func()
         elif option == 3:
-            view_best_worst_stocks()
+            view_best_worst_stocks_func()
         elif option == 4:
-            view_stock_metrics()
+            view_stock_metrics_func()
         elif option == 5:
             break
         else:
